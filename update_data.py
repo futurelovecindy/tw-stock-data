@@ -1,5 +1,4 @@
 import requests
-import pandas as pd
 import json
 from datetime import datetime
 
@@ -17,12 +16,19 @@ STOCKS = [
 def fetch_json(url):
     headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=15)
         response.raise_for_status()
         return response.json()
     except Exception as e:
         print(f"抓取失敗 {url}: {e}")
         return []
+
+def safe_float(val):
+    # 安全轉換數值，自動去除逗號（例如 2,500 轉為 2500）
+    try:
+        return float(str(val).replace(',', '').strip())
+    except:
+        return 0.0
 
 def main():
     print(f"開始抓取台股資料: {datetime.now()}")
@@ -32,32 +38,34 @@ def main():
     twse_val = fetch_json('https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL')
     tpex_val = fetch_json('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis')
 
-    df_price = pd.DataFrame(twse_price + tpex_price)
-    df_val = pd.DataFrame(twse_val + tpex_val)
-    
-    if not df_price.empty:
-        df_price.rename(columns={'SecuritiesCompanyCode': 'Code', 'ClosingPrice': 'Close'}, inplace=True)
-    if not df_val.empty:
-        df_val.rename(columns={'SecuritiesCompanyCode': 'Code'}, inplace=True)
+    # 建立字典快速對應代號，徹底避開 Pandas 欄位衝突錯誤
+    price_map = {}
+    for item in (twse_price + tpex_price):
+        code = str(item.get('Code') or item.get('SecuritiesCompanyCode') or '').strip()
+        if code:
+            price_map[code] = item
+
+    val_map = {}
+    for item in (twse_val + tpex_val):
+        code = str(item.get('Code') or item.get('SecuritiesCompanyCode') or '').strip()
+        if code:
+            val_map[code] = item
 
     result_rows = []
     for code in STOCKS:
         stock_data = {"id": code}
         
-        if not df_price.empty and 'Code' in df_price.columns:
-            p_row = df_price[df_price['Code'] == code]
-            if not p_row.empty:
-                stock_data['close'] = pd.to_numeric(p_row.iloc[0].get('Close', 0), errors='coerce')
-                stock_data['volumeShares'] = pd.to_numeric(p_row.iloc[0].get('TradeVolume', 0), errors='coerce')
-                change = pd.to_numeric(p_row.iloc[0].get('Change', 0), errors='coerce')
-                stock_data['change'] = change if pd.notnull(change) else 0
+        # 處理價格與成交量
+        p_item = price_map.get(code, {})
+        stock_data['close'] = safe_float(p_item.get('ClosingPrice') or p_item.get('Close'))
+        stock_data['volumeShares'] = safe_float(p_item.get('TradeVolume') or p_item.get('TradingShares'))
+        stock_data['change'] = safe_float(p_item.get('Change'))
 
-        if not df_val.empty and 'Code' in df_val.columns:
-            v_row = df_val[df_val['Code'] == code]
-            if not v_row.empty:
-                stock_data['per'] = pd.to_numeric(v_row.iloc[0].get('PEratio', 0), errors='coerce')
-                stock_data['pbr'] = pd.to_numeric(v_row.iloc[0].get('PBratio', 0), errors='coerce')
-                stock_data['dividendYield'] = pd.to_numeric(v_row.iloc[0].get('DividendYield', 0), errors='coerce')
+        # 處理估值與殖利率
+        v_item = val_map.get(code, {})
+        stock_data['per'] = safe_float(v_item.get('PEratio'))
+        stock_data['pbr'] = safe_float(v_item.get('PBratio'))
+        stock_data['dividendYield'] = safe_float(v_item.get('DividendYield'))
 
         result_rows.append(stock_data)
 
