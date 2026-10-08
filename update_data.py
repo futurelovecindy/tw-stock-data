@@ -35,7 +35,6 @@ def safe_float(val):
 def main():
     print(f"開始抓取台股資料: {datetime.now()}")
     
-    # 採用證交所與櫃買更穩定的官方日成交資訊
     twse_price = fetch_json('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL')
     tpex_price = fetch_json('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes')
     twse_val = fetch_json('https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL')
@@ -58,15 +57,9 @@ def main():
         stock_data = {"id": code}
         
         p_item = price_map.get(code, {})
-        # 兼容各種欄位名稱 (ClosingPrice, Close, Price 等)
-        close_val = p_item.get('ClosingPrice') or p_item.get('Close') or p_item.get('HighestPrice')
-        stock_data['close'] = safe_float(close_val)
-        
-        vol_val = p_item.get('TradeVolume') or p_item.get('TradingShares') or p_item.get('Volume')
-        stock_data['volumeShares'] = safe_float(vol_val)
-        
-        change_val = p_item.get('Change') or p_item.get('PriceChange')
-        stock_data['change'] = safe_float(change_val)
+        stock_data['close'] = safe_float(p_item.get('ClosingPrice') or p_item.get('Close') or p_item.get('HighestPrice'))
+        stock_data['volumeShares'] = safe_float(p_item.get('TradeVolume') or p_item.get('TradingShares') or p_item.get('Volume'))
+        stock_data['change'] = safe_float(p_item.get('Change') or p_item.get('PriceChange'))
 
         v_item = val_map.get(code, {})
         stock_data['per'] = safe_float(v_item.get('PEratio') or v_item.get('PER'))
