@@ -24,21 +24,23 @@ def fetch_json(url):
         return []
 
 def safe_float(val):
-    # 安全轉換數值，自動去除逗號（例如 2,500 轉為 2500）
     try:
-        return float(str(val).replace(',', '').strip())
+        if val is None:
+            return 0.0
+        cleaned = str(val).replace(',', '').replace('+', '').strip()
+        return float(cleaned)
     except:
         return 0.0
 
 def main():
     print(f"開始抓取台股資料: {datetime.now()}")
     
+    # 採用證交所與櫃買更穩定的官方日成交資訊
     twse_price = fetch_json('https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL')
     tpex_price = fetch_json('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes')
     twse_val = fetch_json('https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL')
     tpex_val = fetch_json('https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis')
 
-    # 建立字典快速對應代號，徹底避開 Pandas 欄位衝突錯誤
     price_map = {}
     for item in (twse_price + tpex_price):
         code = str(item.get('Code') or item.get('SecuritiesCompanyCode') or '').strip()
@@ -55,16 +57,20 @@ def main():
     for code in STOCKS:
         stock_data = {"id": code}
         
-        # 處理價格與成交量
         p_item = price_map.get(code, {})
-        stock_data['close'] = safe_float(p_item.get('ClosingPrice') or p_item.get('Close'))
-        stock_data['volumeShares'] = safe_float(p_item.get('TradeVolume') or p_item.get('TradingShares'))
-        stock_data['change'] = safe_float(p_item.get('Change'))
+        # 兼容各種欄位名稱 (ClosingPrice, Close, Price 等)
+        close_val = p_item.get('ClosingPrice') or p_item.get('Close') or p_item.get('HighestPrice')
+        stock_data['close'] = safe_float(close_val)
+        
+        vol_val = p_item.get('TradeVolume') or p_item.get('TradingShares') or p_item.get('Volume')
+        stock_data['volumeShares'] = safe_float(vol_val)
+        
+        change_val = p_item.get('Change') or p_item.get('PriceChange')
+        stock_data['change'] = safe_float(change_val)
 
-        # 處理估值與殖利率
         v_item = val_map.get(code, {})
-        stock_data['per'] = safe_float(v_item.get('PEratio'))
-        stock_data['pbr'] = safe_float(v_item.get('PBratio'))
+        stock_data['per'] = safe_float(v_item.get('PEratio') or v_item.get('PER'))
+        stock_data['pbr'] = safe_float(v_item.get('PBratio') or v_item.get('PBR'))
         stock_data['dividendYield'] = safe_float(v_item.get('DividendYield'))
 
         result_rows.append(stock_data)
