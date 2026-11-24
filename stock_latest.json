@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-23T21:36:03.804488",
+  "updatedAt": "2026-11-24T20:16:26.295564",
   "rows": [
     {
       "id": "2383",
@@ -12,9 +12,9 @@
     },
     {
       "id": "6488",
-      "close": 460.5,
-      "volumeShares": 12122990.0,
-      "change": 19.0,
+      "close": 506.0,
+      "volumeShares": 446957.0,
+      "change": 45.5,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -84,9 +84,9 @@
     },
     {
       "id": "5536",
-      "close": 594.0,
-      "volumeShares": 2002682.0,
-      "change": 3.0,
+      "close": 653.0,
+      "volumeShares": 1902760.0,
+      "change": 59.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -183,9 +183,9 @@
     },
     {
       "id": "5347",
-      "close": 110.0,
-      "volumeShares": 23938792.0,
-      "change": 3.5,
+      "close": 121.0,
+      "volumeShares": 4489467.0,
+      "change": 11.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -210,27 +210,27 @@
     },
     {
       "id": "6222",
-      "close": 16.95,
-      "volumeShares": 10003.0,
-      "change": 1.45,
+      "close": 17.15,
+      "volumeShares": 21000.0,
+      "change": 0.2,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
     },
     {
       "id": "6510",
-      "close": 2255.0,
-      "volumeShares": 1214519.0,
-      "change": -110.0,
+      "close": 2480.0,
+      "volumeShares": 45842.0,
+      "change": 225.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
     },
     {
       "id": "6217",
-      "close": 88.6,
-      "volumeShares": 4342102.0,
-      "change": 2.7,
+      "close": 97.4,
+      "volumeShares": 187539.0,
+      "change": 8.8,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -255,9 +255,9 @@
     },
     {
       "id": "8299",
-      "close": 1450.0,
-      "volumeShares": 6085975.0,
-      "change": 130.0,
+      "close": 1595.0,
+      "volumeShares": 534999.0,
+      "change": 145.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -318,9 +318,9 @@
     },
     {
       "id": "6435",
-      "close": 163.0,
-      "volumeShares": 436863.0,
-      "change": 14.5,
+      "close": 179.0,
+      "volumeShares": 36865.0,
+      "change": 16.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -336,9 +336,9 @@
     },
     {
       "id": "3317",
-      "close": 38.8,
-      "volumeShares": 598333.0,
-      "change": 2.2,
+      "close": 42.65,
+      "volumeShares": 600906.0,
+      "change": 3.85,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -390,9 +390,9 @@
     },
     {
       "id": "3324",
-      "close": 777.0,
-      "volumeShares": 7306843.0,
-      "change": -17.0,
+      "close": 854.0,
+      "volumeShares": 171910.0,
+      "change": 77.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
@@ -471,36 +471,36 @@
     },
     {
       "id": "3081",
-      "close": 1390.0,
-      "volumeShares": 6665277.0,
-      "change": 25.0,
+      "close": 1525.0,
+      "volumeShares": 215031.0,
+      "change": 135.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
     },
     {
       "id": "3363",
-      "close": 247.5,
-      "volumeShares": 3784511.0,
-      "change": -9.0,
+      "close": 272.0,
+      "volumeShares": 546793.0,
+      "change": 24.5,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
     },
     {
       "id": "3163",
-      "close": 322.0,
-      "volumeShares": 4645427.0,
-      "change": -20.0,
+      "close": 354.0,
+      "volumeShares": 178808.0,
+      "change": 32.0,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
     },
     {
       "id": "4979",
-      "close": 255.0,
-      "volumeShares": 9961812.0,
-      "change": -11.0,
+      "close": 280.5,
+      "volumeShares": 400366.0,
+      "change": 25.5,
       "per": 0.0,
       "pbr": 0.0,
       "dividendYield": 0.0
